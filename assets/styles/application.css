@@ -1,0 +1,14 @@
+@import url('../fonts/font.css');
+
+/*
+	Colors: 
+		MainBackground: #2e2e2e;
+	
+	;
+*/
+
+body { 
+	background: #2e2e2e;
+	color: white;
+	font-family: "Open Sans";
+}
