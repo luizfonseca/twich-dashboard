@@ -8,8 +8,7 @@ require('./functions.jsx');
 import React from "react";
 import { render } from "react-dom";
 import { Router, Route, Link, hashHistory } from 'react-router'
-import { RouteTransition } from 'react-router-transition'
-import { initializeTwitch, loginTwitch } from './functions.jsx'
+import { loginTwitch } from './functions.jsx'
 
 const {Grid, Row, Col} = require('react-flexbox-grid')
 
@@ -27,7 +26,7 @@ const Auth = React.createClass({
 // Initial Page
 const Index = React.createClass({
 	componentWillMount() {
-		initializeTwitch();
+		return
 	},
 
 	render() {

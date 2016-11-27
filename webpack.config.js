@@ -4,8 +4,6 @@ var webpack = require('webpack');
 module.exports = {
   entry: {
   app: ['webpack/hot/dev-server', './javascripts/index.jsx']
- 
-
 },
 output: {
   path: './public/built',
@@ -24,9 +22,8 @@ module: {
    { test: /\.(png|jpg)$/, loader: 'url-loader?limit=8192' }
  ]
 },
- plugins: [
-   new webpack.HotModuleReplacementPlugin()
- ],
-  target: 'node'
+ plugins: [new webpack.HotModuleReplacementPlugin()],
+ target: 'electron-renderer'
+
 
 }
