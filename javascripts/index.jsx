@@ -1,21 +1,35 @@
+require('../less/main.less')
+require('./functions.jsx')
 
 
-require('../less/main.less');
-require('./functions.jsx');
-
-'use strict';
 
 import React from "react";
 import { render } from "react-dom";
+
+const { Grid, Row, Col } = require('react-flexbox-grid')
+
 import { Router, Route, Link, hashHistory } from 'react-router'
-import { loginTwitch } from './functions.jsx'
-
-const {Grid, Row, Col} = require('react-flexbox-grid')
 
 
 
+
+'use strict';
+
+import { loginTwitch, saveToken, getSavedToken, getUserChannelData } from './functions.jsx'
+import TopLayout from './layout.jsx'
 
 const mainContainer = document.querySelector("#content");
+
+Twitch.events.addListener('auth.login', function(status) {
+   //console.log(status)
+
+   const ActiveToken = Twitch.getToken()
+   saveToken(ActiveToken)
+   getSavedToken()
+
+
+});	
+
 
 
 const Auth = React.createClass({
@@ -26,21 +40,26 @@ const Auth = React.createClass({
 // Initial Page
 const Index = React.createClass({
 	componentWillMount() {
-		return
+		loginTwitch();
 	},
 
 	render() {
 		return (
 			<Grid>
 				<Row>
-					<Col lg={6} xs={6} sm={6}>
+					<Col lg={12} xs={12} sm={12}>
 						<Row center="sm">
-							<img src={require('../assets/images/twitchlogo.png')} />
+							<Col lg={6} xs={6} sm={6}>
 
-							<Link to="dashboard" className="active">Go to Dashboard</Link>
+								<div className="loadingIcon">
+									<h3> Authenticating you on Twitch... </h3>
+									<img src={require('../assets/images/loading.svg')} />
+								</div>
+							</Col>
 						</Row>
 					</Col>
 				</Row>
+
 			</Grid>
 		)
 		
@@ -50,12 +69,36 @@ const Index = React.createClass({
 
 // Dashboard Page
 const Dashboard = React.createClass({
+  getInitialState: function () {
+  	return {}
+  },
+
+ 	componentWillReceiveProps(nextProps) {
+
+ 		var self = this;
+		Twitch.api({ method: 'channel'}, function(error, channel){
+			self.setState(channel)
+		})
+ 	},
+
+ 	componentWillUpdate(nextProps, nextState) {
+
+ 	},
+
+	componentWillMount() {
+		console.log(TwitchToken);
+	},
+
+
 	render() {
 		return (
-			<div className="dash">Dashboard
-				<Link to="/" className="active">Go back</Link>
+			<div>
+				<TopLayout username={this.state.display_name} avatar={this.state.logo}/>
 
-		  </div>
+					<div className="dash">Dashboard
+						<Link to="/" className="active">Go back {TwitchToken}</Link>
+			  	</div>
+			</div>
 		)
 	}
 })
